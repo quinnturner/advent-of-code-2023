@@ -33,3 +33,34 @@ export default function day1(document: string) {
   }
   return sum;
 }
+
+export function day1Speedy(document: string) {
+  const { length } = document;
+
+  let sum = 0;
+
+  let haveSeenANumberOnThisLine = false;
+  let currentNumber = -1;
+
+  for (let i = 0; i < length; i++) {
+    const char = document.charAt(i);
+    if (map.has(char)) {
+      currentNumber = map.get(char)!;
+      if (!haveSeenANumberOnThisLine) {
+        sum += 10 * currentNumber;
+        haveSeenANumberOnThisLine = true;
+      }
+    } else if (char === '\n') {
+      if (haveSeenANumberOnThisLine) {
+        sum += currentNumber;
+      }
+      haveSeenANumberOnThisLine = false;
+      currentNumber = -1;
+    }
+  }
+  // Edge case for the last line, since it doesn't end on a `\n`.
+  if (currentNumber !== -1) {
+    sum += currentNumber;
+  }
+  return sum;
+}
